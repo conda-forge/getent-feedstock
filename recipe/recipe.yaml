@@ -1,0 +1,50 @@
+schema_version: 1
+
+context:
+  name: getent
+  version: "0.2"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/${{ name }}-${{ version }}.tar.gz
+  sha256: cde348284c9840261cfae81c03775d7e25fd0f88dc6f83d061ebc7e5b8e2c2de
+  patches:
+    - setup.patch
+
+build:
+  number: 2
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv
+
+requirements:
+  host:
+    - pip
+    - python ${{ python_min }}.*
+    - setuptools
+  run:
+    - python >=${{ python_min }}
+
+tests:
+  - python:
+      imports:
+        - getent
+      pip_check: true
+      python_version: ${{ python_min }}
+
+about:
+  license: MIT
+  license_file: LICENSE
+  summary: Python interface to the POSIX getent family of commands (getpwent, getgrent, getnetent, etc.)
+  description: |
+    Python interface to the POSIX getent family of commands (getpwent,
+    getgrent, getnetent, etc.)
+  homepage: https://github.com/tehmaze/getent
+  repository: https://github.com/tehmaze/getent
+  documentation: https://github.com/tehmaze/getent
+
+extra:
+  recipe-maintainers:
+    - jan-janssen
